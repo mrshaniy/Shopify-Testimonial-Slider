@@ -1,0 +1,171 @@
+{{ 'nws-testimonial.css' | asset_url | stylesheet_tag }}
+{% style %}
+  .nws-testimonial {
+    {% if section.settings.slct-bg == 'gradient' %}background:{{ section.settings.section_background_gradient }};{% endif %}
+    {% if section.settings.slct-bg == 'solid' %}background:{{ section.settings.section-background }};{% endif %}
+    {% if section.settings.slct-bg == 'image' %}background-image:url({{ section.settings.bg_img | img_url: 'master'}});
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center; {% endif %}
+  }
+{% endstyle %}
+<!-- nws-testimonial -->
+<div
+  class="nws-testimonial nws-same-padding{% if section.settings.section-extra-class != blank %}{{ section.settings.section-extra-class }}{% endif %}"
+  {% if section.settings['bg-img'] != blank %}
+    style="background-image: url({{ section.settings.bg-img | img_url: 'master' }})"
+  {% endif %}
+>
+  <div class="nws-custom-container">
+    <div class="nws-section-header">
+      {% if section.settings['section-title'] != blank %}
+        <h2 class="section-title">{{ section.settings['section-title'] }}</h2>
+      {% endif %}
+      {% if section.settings.section_desc != blank %}
+        <div class="section-desc">{{ section.settings.section_desc }}</div>
+      {% endif %}
+    </div>
+    <div class="nws-custom-row nws-testimonial-slide">
+      {% for block in section.blocks %}
+        <div class="nws-testimonial-box">
+          <div class="nws-testimonial-inner">
+            {% if block.settings['testimonial-title'] != blank %}
+              <div class="nws-testimonial-header">
+                <h4 class="nws-testimonial-title">{{ block.settings['testimonial-title'] }}</h4>
+                <div class="nws-review-star">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+              </div>
+            {% endif %}
+            {% if block.settings['testimonial-desc'] != blank %}
+              <div class="nws-testimonial-content">{{ block.settings['testimonial-desc'] }}</div>
+            {% endif %}
+            <div class="nws-testimonial-footer">
+              <img
+                src="{{ block.settings.img | img_url: '200x' }}"
+                width="auto"
+                height="auto"
+                alt="here is reviewer image"
+              >
+              <div class="nws-testimonial-footer-desc">
+                {% if block.settings['testimonial-name'] != blank %}
+                  <h5>{{ block.settings['testimonial-name'] }}</h5>
+                  <div class="nws-verify">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="7" cy="7" r="7" fill="#67BFCD"></circle>
+                      <path d="M9.8182 5L5.81822 9L4 7.18182" stroke="black" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    <span>Verified Buyer</span>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    {% if section.settings.btn_name != blank %}
+      <a href="{{ section.settings.btn_link }}" class="nws-section-btn">{{ section.settings.btn_name }}</a>
+    {% endif %}
+  </div>
+</div>
+<!-- end nws-testimonial -->
+{% schema %}
+{
+  "name": "Nws Testimonial",
+  "settings": [
+    {
+      "type": "select",
+      "options": [
+        { "value": "gradient", "label": "Gradient" },
+        { "value": "solid", "label": "Background Solid Color"},
+        { "value": "image", "label": "Background Image"}
+        ],
+      "id": "slct-bg",
+      "default": "solid",
+      "label": "Section Background Type"
+    },
+    {
+      "type": "color_background",
+      "label": "Section Background Gradient",
+      "id": "section_background_gradient"
+    },
+    {
+      "type": "color",
+      "id": "section-background",
+      "info": "Background",
+      "label": "Section Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_img",
+      "info": "Background Image",
+      "label": "BG Image"
+    },
+     {
+      "type": "text",
+      "id": "section-extra-class",
+      "info": "Add section class (without.). Use spaces to add multiple classes",
+      "label": "Section Class"
+    },
+    {
+      "type": "text",
+      "id": "section-title",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "section_desc",
+      "label": "Description"
+    },
+    {
+      "type": "text",
+      "id": "btn_name",
+      "label": "Button Label"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Paste URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "text",
+          "id": "testimonial-title",
+          "label": "Testimonial Title"
+        },
+        {
+          "type": "richtext",
+          "id": "testimonial-desc",
+          "label": "Testimonial Description"
+        },
+        {
+        "type": "image_picker",
+        "id": "img",
+        "label": "Add Image"
+        },
+        {
+          "type": "text",
+          "id": "testimonial-name",
+          "label": "Name"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nws Testimonial",
+      "category": "Nws Custom Section"
+    }
+  ]
+}
+{% endschema %}
